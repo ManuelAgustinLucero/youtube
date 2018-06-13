@@ -27,7 +27,33 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="stopVideo()" data-dismiss="modal">Cerrar</button>
+                    <div class="row ">
+                        <div class="col-md-3">
+                            <label for="">Pocion vertical</label>
+                            <input id="verticale" type="number" class="form-control  border-input" placeholder="minimo -3 maximo 33" min="-3" max="33"
+                                type="text">
+                            <span class="text-danger" id="#ErrorVerticale"></span>
+
+                        </div>
+                        <div class="col-md-3 ">
+                            <label for="">Pocion horizontal</label>
+                            <input id="horizontale" type="number" class="form-control  border-input" placeholder="minimo -67 maximo 67" min="-67" max="67"
+                                type="text">
+                            <span class="text-danger" id="#ErrorHorizontale"></span>
+
+                        </div>
+                        <div class="col-md-3">
+                            <br>
+                            <button class="  btn btn-large btn-success" onclick="PocisionarModal()">Posicionar</button>
+
+                        </div>
+                        <div class="col-md-3">
+                            <br>
+                            <button type="button" class="btn btn-danger" onclick="stopVideo()" data-dismiss="modal">Cerrar</button>
+
+                        </div>
+                    </div>
+
 
                 </div>
             </div>
@@ -55,31 +81,61 @@
                                 <br>
                                 <button class=" col-md-6 col-lg-offset-3 btn btn-large btn-success" onclick="Agregar()">Agregar</button>
                             </div>
-                            <div class="col-md-6 col-lg-offset-3">
-                                    <br>
 
-                                <button onclick="onYouTubePlayerAPIReady()" class=" col-md-6 col-lg-offset-3 btn btn-large btn-primary" data-toggle="modal" data-target="#myModal">Reproducir lista</button>
+                        </div>
+                        <h4 class="text-center">Pocision de modal</h4>
+
+                        <div class="row">
+                            <div class="col-md-6 col-lg-offset-3">
+                                <label for="">Pocision vertical</label>
+                                <input id="vertical" type="number" class="form-control  border-input" min="-3" max="33" placeholder="minimo -3 maximo 33"
+                                    type="text">
+                                <span class="text-danger" id="#ErrorVertical"></span>
+                                <span class="text-success" id="#ErrorVerticalS"></span>
+
+
+                            </div>
+                            <div class="col-md-6 col-lg-offset-3">
+                                <label for="">Pocision horizontal</label>
+                                <input id="horizontal" type="number" class="form-control  border-input" min="-67" max="67" placeholder="minimo -67 maximo 67"
+                                    type="text">
+                                <span class="text-danger" id="#ErrorHorizontal"></span>
+                                <span class="text-success" id="#ErrorHorizontalS"></span>
 
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 col-lg-offset-3">
+                                <br>
+                                <button class=" col-md-6 col-lg-offset-3 btn btn-large btn-success" onclick="Pocisionar()">Posicionar</button>
+                              
+                            </div>
+                            <div class="col-md-6 col-lg-offset-3">
+                                <hr>
 
+                                <button onclick="onYouTubePlayerAPIReady()" class=" col-md-6 col-lg-offset-3 btn btn-large btn-primary" data-toggle="modal"
+                                    data-target="#myModal">Reproducir lista</button>
+                                
+                            </div>
+                        </div>
+                        <hr>
                         <div class="row">
                             <div class="col-md-8 col-lg-offset-2">
-                                    <table id="tabla" class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center">Numero</th>
-                                                    <th class="text-center">Link</th>
-                                                    <th class="text-center">Borrar</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="text-center">
-            
-                                            </tbody>
-            
-                                        </table>
+                                <table id="tabla" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Numero</th>
+                                            <th class="text-center">Link</th>
+                                            <th class="text-center">Borrar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+
+                                    </tbody>
+
+                                </table>
                             </div>
-                       
+
                         </div>
                     </div>
                 </div>
@@ -142,18 +198,18 @@
         $(tabla + ' tbody').html('');
         var fila;
         for (var i = 0; i < arreglo.length; i++) {
-            fila = '<tr><td>' + arreglo[i].id + '</td><td>' + arreglo[i].link + '</td><td><span onclick="Eliminar(' + i+ ')" class="text-danger text-center btn btn-danger" >X</sapn></td></tr>';
+            fila = '<tr><td>' + arreglo[i].id + '</td><td>' + arreglo[i].link + '</td><td><span onclick="Eliminar(' + i + ')" class="text-danger text-center btn btn-danger" >X</sapn></td></tr>';
             /*
             */
             $(tabla + ' tbody').append(fila);
 
         }
     }
-    function Eliminar(id){
+    function Eliminar(id) {
         const tabla = "#tabla";
 
-         arreglo.splice(id, 1); // así es como se elimina un elemento
-         $(tabla + ' tbody').html('');
+        arreglo.splice(id, 1); // así es como se elimina un elemento
+        $(tabla + ' tbody').html('');
         var fila;
         for (var i = 0; i < arreglo.length; i++) {
             fila = '<tr><td>' + arreglo[i].id + '</td><td>' + arreglo[i].link + '</td><td><span onclick="Eliminar(' + i + ')" class="text-danger text-center btn btn-danger" >X</sapn></td></tr>';
@@ -162,6 +218,46 @@
             $(tabla + ' tbody').append(fila);
 
         }
+    }
+    function Pocisionar() {
+        var vertical = $("#vertical").val();
+        var horizontal = $("#horizontal").val();
+        if (vertical <= 33 && -3 <= vertical) {
+            $(".modal").css("top", vertical + "%");
+            document.getElementById('#ErrorVertical').innerHTML = '';
+            document.getElementById('#ErrorVerticalS').innerHTML = 'Posicion Agregada';
+
+        } else {
+            document.getElementById('#ErrorVertical').innerHTML = 'Paso los limites de -3 minimo y max 33';
+
+        }
+        if (horizontal <= 67 && -67 <= horizontal) {
+            $(".modal").css("right", horizontal + "%");
+            document.getElementById('#ErrorHorizontal').innerHTML = '';
+            document.getElementById('#ErrorHorizontalS').innerHTML = 'Posicion Agregada';
+
+        } else {
+            document.getElementById('#ErrorHorizontal').innerHTML = 'Paso los limites de -67 minimo y max 67';
+        }
+
+    }
+    function PocisionarModal() {
+        var vertical = $("#verticale").val();
+        var horizontal = $("#horizontale").val();
+        if (vertical <= 33 && -3 <= vertical) {
+            $(".modal").css("top", vertical + "%");
+            document.getElementById('#ErrorVerticale').innerHTML = '';
+        } else {
+            document.getElementById('#ErrorVerticale').innerHTML = 'Paso los limites de -3 minimo y max 33';
+        }
+        if (horizontal <= 67 && -67 <= horizontal) {
+            $(".modal").css("right", horizontal + "%");
+            document.getElementById('#ErrorHorizontale').innerHTML = '';
+
+        } else {
+            document.getElementById('#ErrorHorizontale').innerHTML = 'Paso los limites de -67 minimo y max 67';
+        }
+
     }
 
 </script>
