@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lista</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="paper-dashboard.css">
+    <link rel="stylesheet" href="modal.css">
+
+</head>
+
+<body>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"> Reproductor</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="fixed-top col-md-12" id="player"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="stopVideo()" data-dismiss="modal">Cerrar</button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="wrapper">
+
+
+        <!-- The Modal -->
+
+        <div class="row">
+            <div class="col-md-8 col-lg-offset-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="text-center">Lista youtube</h4>
+                        <div class="row">
+                            <div class="col-md-6 col-lg-offset-3">
+                                <label for="">Agrega link de youtube</label>
+                                <input id="link" class="form-control  border-input" type="text">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-lg-offset-3">
+                                <br>
+                                <button class=" col-md-6 col-lg-offset-3 btn btn-large btn-success" onclick="Agregar()">Agregar</button>
+                            </div>
+                            <div class="col-md-6 col-lg-offset-3">
+                                    <br>
+
+                                <button onclick="onYouTubePlayerAPIReady()" class=" col-md-6 col-lg-offset-3 btn btn-large btn-primary" data-toggle="modal" data-target="#myModal">Reproducir lista</button>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8 col-lg-offset-2">
+                                    <table id="tabla" class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">Numero</th>
+                                                    <th class="text-center">Link</th>
+                                                    <th class="text-center">Borrar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-center">
+            
+                                            </tbody>
+            
+                                        </table>
+                            </div>
+                       
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="jquery-1.10.2.js" type="text/javascript"></script>
+<script src="bootstrap.min.js" type="text/javascript"></script>
+<script src="http://www.youtube.com/player_api"></script>
+
+<script type="text/javascript">
+    var arreglo = [];
+    var count = 0;
+    var videonext = 0;
+    function onYouTubePlayerAPIReady() {
+        if (arreglo[0] != null) {
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: arreglo[0].videoId,
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+    }
+    //reproducir video
+    function onPlayerReady(event) {
+        event.target.playVideo();
+    }
+
+
+
+    //reproducir neuvo video cunado finaliza uno
+    function onPlayerStateChange(event) {
+
+        if (event.data === 0) {
+            videonext++;
+            event.target.loadVideoById({
+                videoId: arreglo[videonext].videoId
+            });
+        }
+    }
+    function stopVideo() {
+        player.stopVideo();
+    }
+    function Agregar() {
+        const tabla = "#tabla";
+        var link = $("#link").val();
+        $('#link').val('');
+        var result = link.split("=");
+        count++;
+
+        arreglo.push({ id: count, link: link, videoId: result[1] });
+
+        console.log(arreglo);
+        $(tabla + ' tbody').html('');
+        var fila;
+        for (var i = 0; i < arreglo.length; i++) {
+            fila = '<tr><td>' + arreglo[i].id + '</td><td>' + arreglo[i].link + '</td><td><span onclick="Eliminar(' + i+ ')" class="text-danger text-center btn btn-danger" >X</sapn></td></tr>';
+            /*
+            */
+            $(tabla + ' tbody').append(fila);
+
+        }
+    }
+    function Eliminar(id){
+        const tabla = "#tabla";
+
+         arreglo.splice(id, 1); // así es como se elimina un elemento
+         $(tabla + ' tbody').html('');
+        var fila;
+        for (var i = 0; i < arreglo.length; i++) {
+            fila = '<tr><td>' + arreglo[i].id + '</td><td>' + arreglo[i].link + '</td><td><span onclick="Eliminar(' + i + ')" class="text-danger text-center btn btn-danger" >X</sapn></td></tr>';
+            /*
+            */
+            $(tabla + ' tbody').append(fila);
+
+        }
+    }
+
+</script>
+
+</html>
